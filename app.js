@@ -9,7 +9,10 @@ const adminRouter = require("./routes/adminRoute");
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://trackme-attendance.netlify.app/",
+    ],
     credentials: true,
   }),
 );
