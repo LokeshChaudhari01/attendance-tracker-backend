@@ -11,12 +11,12 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://trackme-attendance.netlify.app/",
+      "http://127.0.0.1:5173",
+      "https://trackme-attendance.netlify.app",
     ],
     credentials: true,
   }),
 );
-
 app.use(cookieParser());
 app.use(express.json());
 
