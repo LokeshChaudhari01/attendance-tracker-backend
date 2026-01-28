@@ -12,12 +12,13 @@ const createSendToken = (user, res) => {
 
   const days = Number(process.env.JWT_COOKIE_EXPIRES_IN || 7);
 
-  res.cookie("jwt", token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: false, // set true in production (HTTPS)
-    expires: new Date(Date.now() + days * 24 * 60 * 60 * 1000),
-  });
+res.cookie("jwt", token, {
+  httpOnly: true,
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  secure: process.env.NODE_ENV === "production",
+  expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+});
+
 };
 
 exports.signup = async (req, res) => {
