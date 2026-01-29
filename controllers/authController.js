@@ -12,13 +12,12 @@ const createSendToken = (user, res) => {
 
   const days = Number(process.env.JWT_COOKIE_EXPIRES_IN || 7);
 
-res.cookie("jwt", token, {
-  httpOnly: true,
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-  secure: process.env.NODE_ENV === "production",
-  expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-});
-
+  res.cookie("jwt", token, {
+    httpOnly: true,
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: process.env.NODE_ENV === "production",
+    expires: new Date(Date.now() + days * 24 * 60 * 60 * 1000),
+  });
 };
 
 exports.signup = async (req, res) => {
@@ -129,8 +128,14 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  res.cookie("jwt", "", { maxAge: 1 });
-  res.json({ message: "Logged out" });
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: process.env.NODE_ENV === "production",
+    expires: new Date(0), // force delete
+  });
+
+  res.status(200).json({ message: "Logged out" });
 };
 
 exports.getMe = async (req, res) => {

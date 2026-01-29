@@ -18,7 +18,6 @@ exports.getMyAttendance = async (req, res) => {
     }));
 
     // for future calculations
-    // for future calculations
     formatted = formatted.map((el) => {
       let moreToAttend = 0;
       let canBunk = 0;
@@ -74,26 +73,27 @@ exports.getMyAttendance = async (req, res) => {
 exports.updateAttendance = async (req, res) => {
   try {
     const { attendanceId } = req.params;
-    const { deltaTotal, deltaAttended } = req.body;
-    const user = req.user;
+    const { deltaTotal = 0, deltaAttended = 0 } = req.body;
+    const userId = req.user._id;
 
-    // Must belong to this logged in student
-    const record = await Attendance.findOne({
-      _id: attendanceId,
-      student: user._id,
-    });
+    const record = await Attendance.findOneAndUpdate(
+      { _id: attendanceId, student: userId },
+      {
+        $inc: {
+          totalLecs: deltaTotal,
+          attendedLecs: deltaAttended,
+        },
+      },
+      { new: true }, // return updated doc
+    );
 
     if (!record) {
       return res.status(404).json({ message: "Attendance not found" });
     }
 
-    record.attendedLecs += deltaAttended;
-    record.totalLecs += deltaTotal;
-
     if (record.totalLecs < 0) record.totalLecs = 0;
     if (record.attendedLecs < 0) record.attendedLecs = 0;
-
-    if (record.attendedLecs >= record.totalLecs) {
+    if (record.attendedLecs > record.totalLecs) {
       record.attendedLecs = record.totalLecs;
     }
 
