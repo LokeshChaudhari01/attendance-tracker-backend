@@ -8,18 +8,14 @@ const attendanceSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
-
     subject: {
       type: String,
-      ref: "Subject",
       required: true,
     },
-
     attendedLecs: {
       type: Number,
       default: 0,
     },
-
     totalLecs: {
       type: Number,
       default: 0,
@@ -27,6 +23,9 @@ const attendanceSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+attendanceSchema.index({ student: 1, _id: 1 });
+attendanceSchema.index({ student: 1, subject: 1 }, { unique: true });
 
 const Attendance = mongoose.model("Attendance", attendanceSchema);
 module.exports = Attendance;
