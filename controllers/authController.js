@@ -30,6 +30,13 @@ exports.signup = async (req, res) => {
         .json({ message: "Roll number and password required" });
     }
 
+    // password length check
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be minimun 6 characters" });
+    }
+
     const { year, branch, rollInBranch } = parseRoll(rollNumber);
 
     // Semester rule
