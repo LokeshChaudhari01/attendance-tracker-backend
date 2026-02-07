@@ -3,7 +3,7 @@ const subjectMap = {
     sem2: ["MTTDE", "DE", "DS", "AP", "CSkills", "MG"],
     sem4: ["DAA", "SE", "OS", "DPPL", "DMGT", "ITW2"],
   },
-  aiml: {
+  csa: {
     sem2: ["PS", "LA", "DS", "AP", "CSkills", "ITW1"],
     sem4: ["ML", "DAA", "SE", "OS", "DBMS", "DHV", "MLW2"],
   },
