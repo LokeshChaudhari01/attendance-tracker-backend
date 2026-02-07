@@ -11,7 +11,7 @@ module.exports = function parseRoll(roll) {
   const branch = roll.slice(4, 7); // cse
   const rollInBranch = Number(roll.slice(7)); // 234
 
-  const allowedBranches = ["cse", "aiml", "csd", "csh", "ece", "eci"];
+  const allowedBranches = ["cse", "csa", "csd", "csh", "ece", "eci"];
   if (!allowedBranches.includes(branch)) {
     throw new Error("Invalid branch");
   }
