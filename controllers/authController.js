@@ -121,7 +121,7 @@ exports.login = async (req, res) => {
       });
     }
 
-    const tokem = createSendToken(user, res);
+    const token = createSendToken(user, res);
 
     res.status(200).json({
       message: "Login successful",
