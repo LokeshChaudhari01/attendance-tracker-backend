@@ -7,12 +7,17 @@ const studentRouter = require("./routes/studentRoute");
 const adminRouter = require("./routes/adminRoute");
 
 const app = express();
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
       "http://127.0.0.1:5173",
-      "https://trackme-attendance.netlify.app",
+      "https://acad96.netlify.app",
     ],
     credentials: true,
   }),

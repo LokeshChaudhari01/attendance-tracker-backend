@@ -14,10 +14,12 @@ const createSendToken = (user, res) => {
 
   res.cookie("jwt", token, {
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
+    secure: true,
     expires: new Date(Date.now() + days * 24 * 60 * 60 * 1000),
   });
+
+  return token;
 };
 
 exports.signup = async (req, res) => {
@@ -80,10 +82,11 @@ exports.signup = async (req, res) => {
 
     await Attendance.insertMany(attendanceDocs);
 
-    createSendToken(user, res);
+    const token = createSendToken(user, res);
 
     res.status(201).json({
       message: "Signup successful",
+      token,
       user: {
         rollNumber: user.rollNumber,
         branch,
@@ -118,10 +121,11 @@ exports.login = async (req, res) => {
       });
     }
 
-    createSendToken(user, res);
+    const tokem = createSendToken(user, res);
 
     res.status(200).json({
       message: "Login successful",
+      token,
       user: {
         id: user._id,
         rollNumber: user.rollNumber,
@@ -137,9 +141,9 @@ exports.login = async (req, res) => {
 exports.logout = (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    secure: process.env.NODE_ENV === "production",
-    expires: new Date(0), // force delete
+    sameSite: "none",
+    secure: true,
+    expires: new Date(0),
   });
 
   res.status(200).json({ message: "Logged out" });
